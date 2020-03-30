@@ -16,7 +16,7 @@
           width="40"
         />
 
-        <span class="display-1" @click="home">检察建议流程辅助办案系统</span>
+        <span id="system-title" class="display-1" @click="home">检察建议流程辅助办案系统</span>
       </div>
 
       <v-spacer></v-spacer>
@@ -74,8 +74,17 @@ export default {
   },
   methods: {
     home(){
-      this.$router.push('/');
+      console.log("SystemTitleNowPath: " + this.$router.currentRoute.path);
+      if(this.$router.currentRoute.path !== '/'){
+        this.$router.push('/');
+      }
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  #system-title{
+    cursor: pointer;
+  }
+</style>

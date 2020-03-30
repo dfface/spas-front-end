@@ -15,6 +15,7 @@ export default function(){
       apiInit().then(function (result) {
         if(result.code === IS_LOGGED_TRUE){
           // 存储 accessToken
+          // 虽然读不到更新的值，但可以提交 mutation
           store.commit('changeAccessToken',result.data.accessToken);
           store.commit('changeIsLogged',true);
           // 存储 idToken

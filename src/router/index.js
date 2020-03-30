@@ -41,10 +41,12 @@ const router = new VueRouter({
 // 添加全局导航守卫
 router.beforeEach(async function(to, from, next){
   // 解决登录后刷新后自动跳转到 login 的 bug: 曲线救国，使用非 httpOnly 的 cookie（只是表征一下登录状态）
+  // 可以测试刷新时的值，绝对是 false
   console.log("router-isLoggedVuex: " + store.state.isLogged);
   if(to.matched.some(record => record.meta.notRequireAuth)){
     next();
   }
+  // 路由必须用 cookie 判断，因为一旦你刷新页面 vuex 来不及就一个 false，每次刷新都是 false
   else if(!isLoggedCookie()) {
     next('/login');
   }

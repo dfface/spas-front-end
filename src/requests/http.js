@@ -24,8 +24,6 @@ axios.interceptors.request.use(
     }
 );
 
-export default axios;
-
 export function post(url, object) {
   return new Promise(function (resolve,reject) {
     axios.post(url,object)
