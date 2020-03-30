@@ -8,10 +8,16 @@ export function setIdToken(idToken){
 }
 
 export function getIdToken() {
-  return JSON.parse(localStorage.gettem('idToken'));
+  // 构造一个 默认值
+  let idTokenDefault = {
+    id: "", name: "", position: "", email: "", phone: "", officeUrl: "", officeName: "", officePhone: "", officeEmail: "", officeId: "", avatar: "", departmentId: "", departmentName: ""
+  };
+  let idToken = JSON.parse(localStorage.getItem('idToken'));
+  return idToken === null ? idTokenDefault : idToken;
 }
 
-export function isLogged() {
+export function isLoggedCookie() {
   // 登录状态在 cookie 曲线救国
+  console.log("isLoggedCookie: "+ Cookie.get('isLogged'));
   return Cookie.get('isLogged') !== undefined;
 }

@@ -1,27 +1,34 @@
-import {apiIsLogged} from '../requests/api'
-import * as ApiCode from '../requests/apiCode'
 
-// 刷新 access 令牌
-export let getIsLogged = function (store) {
+// 检查是否登录
+import {apiInit, apiIsLogged} from "../requests/api";
+import {IS_LOGGED_TRUE} from '../requests/apiCode';
+import {setIdToken} from './utils'
+import store from '../store'
+
+export default function(){
   apiIsLogged().then(function (res) {
-  console.log(res);
-  // 还有待继续更改
-  if(res.code === ApiCode.IS_LOGGED_TRUE) {
-    // 登录状态
-
-    store.commit('changeAccessToken', res.data.accessToken);
-    return ApiCode.IS_LOGGED_TRUE;
-  }
-  else{
-    return ApiCode.IS_LOGGED_FALSE;
-  }
-})
-};
-
-export let created = function () {
-  /* 检查登录状态，设置 vuex */
-  // 首先进行登录状态获取 服务端API
-  console.log("初始化系统");
-  let that = this;
-  getIsLogged(that.$store);
-};
+    console.log("init-你打开了系统");
+    console.log("beforeInit-isLoggedServer：" + res.msg);
+    console.log("beforeInit-isLoggedVuex：" + store.state.isLogged);
+    if(res.code === IS_LOGGED_TRUE){
+      // 如果成功登录，获取Access和ID令牌
+      apiInit().then(function (result) {
+        if(result.code === IS_LOGGED_TRUE){
+          // 存储 accessToken
+          store.commit('changeAccessToken',result.data.accessToken);
+          store.commit('changeIsLogged',true);
+          // 存储 idToken
+          setIdToken(result.data.idToken);
+        }
+        else{
+          alert(result.msg);
+        }
+      })
+    }
+    else{
+      alert(res.msg)
+    }
+    // 读不到更新的值，正常，vue 挂载完成之后其他的文件就可以读到了
+    console.log("afterInit-isLoggedVuex：" + store.getters.getIsLogged);
+  });
+}

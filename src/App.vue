@@ -16,7 +16,7 @@
           width="40"
         />
 
-        <span class="display-1">检察建议流程辅助办案系统</span>
+        <span class="display-1" @click="home">检察建议流程辅助办案系统</span>
       </div>
 
       <v-spacer></v-spacer>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import {isLogged as isLoggedUtil, getIdToken} from './common/utils'
+import {getIdToken} from './common/utils'
 export default {
   name: 'App',
   components: {
@@ -65,10 +65,16 @@ export default {
   }),
   computed: {
     isLogged() {
-      return isLoggedUtil();
+      // 只有这个是实时响应，cookie 做不到
+      return this.$store.state.isLogged;
     },
     idToken() {
       return getIdToken();
+    }
+  },
+  methods: {
+    home(){
+      this.$router.push('/');
     }
   }
 };

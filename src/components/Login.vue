@@ -46,40 +46,75 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-slide-x-transition>
+      <v-snackbar
+        right
+        top
+        :timeout="snackbar.timeout"
+        v-model="snackbar.enable"
+      >
+        {{ snackbar.text }}
+      </v-snackbar>
+    </v-slide-x-transition>
   </v-container>
 </template>
 
 <script>
-  import {apiLogin} from '../requests/api'
-  import {LOGIN_SUCCESS} from '../requests/apiCode'
+  import {apiLogin,apiIsLogged} from '../requests/api'
+  import {LOGIN_SUCCESS,IS_LOGGED_TRUE} from '../requests/apiCode'
   import {mapMutations} from 'vuex'
   import {setIdToken} from '../common/utils'
+  import {TIME_OUT_SNACKBAR} from '../common/settings'
+
   export default {
     name: "Login",
     data(){
       return {
         email: "",
-        password: ""
+        password: "",
+        snackbar: {
+          enable: false,
+          text: "",
+          color: "error",
+          timeout: TIME_OUT_SNACKBAR
+        }
       }
     },
     methods: {
-      ...mapMutations(['changeAccessToken']),
+      ...mapMutations(['changeAccessToken','changeIsLogged']),
       login(){
-        // 一个重要问题是找不到 this
-        let that = this;
-        apiLogin(this.email,this.password).then(function (res) {
-          console.log(res);
-          if(res.code === LOGIN_SUCCESS){
-            let idTokenUnparse = res.data.idToken;
-            let accessToken = res.data.accessToken;
-            // accessToken 提交给 vuex
-            that.changeAccessToken(accessToken);
-            // 保存 idToken 到 localStorage
-            setIdToken(idTokenUnparse);
-            // 转到主页
-            that.$router.push('/');
+        // 先查看是否已经登录
+        let _this = this;
+        apiIsLogged().then(function (res) {
+          console.log("Login-isLoggedServer: " + res.msg);
+          if(res.code === IS_LOGGED_TRUE) {
+            // 已经登录，弹窗提示
+            _this.snackbar.text = res.msg;
+            _this.snackbar.enable = true;
           }
-        })
+          else {
+            // 一个重要问题是找不到 this
+            apiLogin(_this.email,_this.password).then(function (res) {
+              console.log("Login: " + res.msg);
+              if(res.code === LOGIN_SUCCESS){
+                let idTokenUnparse = res.data.idToken;
+                let accessToken = res.data.accessToken;
+                // accessToken 提交给 vuex
+                _this.changeAccessToken(accessToken);
+                // 保存 idToken 到 localStorage
+                setIdToken(idTokenUnparse);
+                _this.changeIsLogged(true);
+                // 转到主页
+                _this.$router.push('/');
+              }
+              else{
+                // 已经登录，弹窗提示
+                _this.snackbar.text = res.msg;
+                _this.snackbar.enable = true;
+              }
+            })
+          }
+        });
       }
     }
   }
