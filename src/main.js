@@ -1,14 +1,14 @@
 import store from './store'
 import router from './router'
 import vuetify from './plugins/vuetify'
-// import axios from "./requests/http";
 import Vue from 'vue'
 import App from './App.vue'
 
 import created from './common/initial'
+import api from './requests/api'
 
 Vue.config.productionTip = false;
-// Vue.prototype.$axios = axios;
+Vue.prototype.$api = api;
 
 new Vue({
   store,
