@@ -35,6 +35,13 @@
       app
       clipped
       v-if="isLogged">
+      <v-list>
+        <v-list-group
+          group="case"
+        >
+          <v-list-item v-for="item in drawerCaseItems" :value="item.value" :to="item.to" :key="item.to"/>
+        </v-list-group>
+      </v-list>
     </v-navigation-drawer>
     <v-content>
       <router-view/>
@@ -43,21 +50,25 @@
 </template>
 
 <script>
-
+import {isLogged as isLoggedUtil, getIdToken} from './common/utils'
 export default {
   name: 'App',
-
   components: {
   },
-
   data: () => ({
+    drawerCaseItems: [
+      {
+        to: '/case/new',
+        value: '值'
+      }
+    ]
   }),
   computed: {
     isLogged() {
-      return this.$store.state.isLogged;
+      return isLoggedUtil();
     },
     idToken() {
-      return JSON.parse(localStorage.getItem('idToken'));
+      return getIdToken();
     }
   }
 };

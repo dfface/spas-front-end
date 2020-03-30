@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import {isLogged} from '../common/utils'
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
     name: 'Login',
     component: () => import('../components/Login'),
     meta: { notRequireAuth: true }
+  },
+  {
+    path: '/case/add',
+    name: 'CaseAdd',
+    component: () => import('../components/case/New')
   }
 ];
 
@@ -32,16 +38,16 @@ const router = new VueRouter({
 });
 
 // 添加全局导航守卫
-
-router.beforeEach(function(to, from, next){
+router.beforeEach(async function(to, from, next){
+  // 解决登录后刷新后自动跳转到 login 的 bug: 曲线救国，使用非 httpOnly 的 cookie（只是表征一下登录状态）
   if(to.matched.some(record => record.meta.notRequireAuth)){
     next();
-  } else {
-    if(!localStorage.getItem("isLogged")){
-      next('/login');
-    } else {
-      next();
-    }
+  }
+  else if(!isLogged()) {
+    next('/login');
+  }
+  else {
+    next();
   }
 });
 

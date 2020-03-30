@@ -4,14 +4,14 @@ import store from './store'
 import router from './router'
 import vuetify from './plugins/vuetify'
 
-import {created} from './common/initial'
+// import {created} from './common/initial'
 
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
   store,
+  router,
   vuetify,
-  created,
+  // created,
   render: h => h(App)
 }).$mount('#app');

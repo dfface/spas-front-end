@@ -53,6 +53,7 @@
   import {apiLogin} from '../requests/api'
   import {LOGIN_SUCCESS} from '../requests/apiCode'
   import {mapMutations} from 'vuex'
+  import {setIdToken} from '../common/utils'
   export default {
     name: "Login",
     data(){
@@ -62,20 +63,19 @@
       }
     },
     methods: {
-      ...mapMutations(['changeIdToken', 'changeAccessToken','changeIsLogged']),
+      ...mapMutations(['changeAccessToken']),
       login(){
-        console.log(this.email);
         // 一个重要问题是找不到 this
         let that = this;
         apiLogin(this.email,this.password).then(function (res) {
           console.log(res);
           if(res.code === LOGIN_SUCCESS){
-            let idToken = res.data.idToken;
+            let idTokenUnparse = res.data.idToken;
             let accessToken = res.data.accessToken;
-            // 提交给 vuex
-            that.changeIsLogged(true);
-            that.changeIdToken(idToken);
+            // accessToken 提交给 vuex
             that.changeAccessToken(accessToken);
+            // 保存 idToken 到 localStorage
+            setIdToken(idTokenUnparse);
             // 转到主页
             that.$router.push('/');
           }
