@@ -5,12 +5,14 @@
 import {get,post} from './http'
 import axiosInstance from './http'
 import home from "./modules/home";
+import cases from "./modules/cases";
 
 export const apiIsLogged = () => get('/isLogged');
 export const apiLogin = (email, password) => post('/login',{"email": email, "password": password});
 export const apiInit = () => get('/init');
 
 axiosInstance['home'] = home;
+axiosInstance['cases'] = cases;
 
 export default axiosInstance;
 

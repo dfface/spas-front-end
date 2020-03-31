@@ -27,7 +27,11 @@
         text
         v-if="isLogged"
       >
-        <span class="mr-2" v-text="idToken.officeName"/>
+        <div
+          class="mr-2"
+          v-text="idToken.officeName"
+          v-ripple
+        />
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
@@ -38,8 +42,23 @@
       <v-list>
         <v-list-group
           group="case"
+          v-model="drawerCaseItems.model"
         >
-          <v-list-item v-for="item in drawerCaseItems" :value="item.value" :to="item.to" :key="item.to"/>
+          <template slot="activator">
+            <v-list-item-content>
+             <v-list-item-title>{{ drawerCaseItems.title }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            v-for="item in drawerCaseItems.items"
+            :to="item.to"
+            :key="item.to">
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -56,12 +75,24 @@ export default {
   components: {
   },
   data: () => ({
-    drawerCaseItems: [
-      {
-        to: '/case/new',
-        value: '值'
-      }
-    ]
+    drawerCaseItems: {
+      title: '案件管理',
+      model: true,
+      items: [
+        {
+          to: '/case/handling',
+          title: '正在办理'
+        },
+        {
+          to: '/case/new',
+          title: '新建案件'
+        },
+        {
+          to: '/case/history',
+          title: '历史案件'
+        }
+      ]
+    }
   }),
   computed: {
     isLogged() {

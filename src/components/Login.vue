@@ -51,6 +51,7 @@
         right
         top
         :timeout="snackbar.timeout"
+        :color="snackbar.color"
         v-model="snackbar.enable"
       >
         {{ snackbar.text }}
@@ -114,6 +115,9 @@
               }
             })
           }
+        })
+        .catch(function (err) {
+          console.log("遇到了一个问题：" + err);
         });
       }
     }

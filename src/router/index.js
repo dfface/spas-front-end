@@ -27,9 +27,15 @@ const routes = [
     meta: { notRequireAuth: true }
   },
   {
-    path: '/case/add',
-    name: 'CaseAdd',
+    path: '/case/new',
+    name: 'CaseNew',
     component: () => import('../components/case/New')
+  },
+  {
+    path: '/case/detail/:caseId',
+    name: 'CaseDetail',
+    props: true,
+    component: () => import('../components/case/Detail')
   }
 ];
 
@@ -48,6 +54,8 @@ router.beforeEach(async function(to, from, next){
   }
   // 路由必须用 cookie 判断，因为一旦你刷新页面 vuex 来不及就一个 false，每次刷新都是 false
   else if(!isLoggedCookie()) {
+    // DEBUG：登录到期/服务端下线，而 vuex 值不变
+    store.commit('changeIsLogged',false);
     next('/login');
   }
   else {

@@ -5,6 +5,7 @@ import axios from 'axios'
 import store from '../store/index'
 import {TIME_TO_UPDATE_TOKEN} from '../common/settings'
 import {IS_LOGGED_TRUE} from './apiCode'
+import JWT from 'jwt-decode'
 
 let axiosInstance = axios.create();
 
@@ -19,19 +20,25 @@ axiosInstance.interceptors.request.use(
       let accessToken = store.state.accessToken;
       if(accessToken){
         // 是否需要刷新
-        let accessTokenParsed = JSON.parse(accessToken);
+        console.log("axios-refresh-whether-or-not");
+        let accessTokenParsed = JWT(accessToken);  // DEBUG：这里要解码JWT
         let now = new Date();
+        console.log("axios-need-to-refresh-token(UTC) exp: " + ((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000).toString() + " now: " + (now.getTime() + now.getTimezoneOffset() * 60 * 1000).toString());
         if((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000 > (now.getTime() + now.getTimezoneOffset() * 60 * 1000) ){
           // 无需更新
+          console.log("axios-token-is-up-to-date");
         }
         else {
           // 需要更新
-          console.log("axios-need-to-refresh-token(UTC) exp: " + (accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000 + "now: " + (now.getTime() + now.getTimezoneOffset() * 60 * 1000))
+          console.log("axios-refresh-start");
           axios.get('/refresh').then(function (res) {
             if(res.code === IS_LOGGED_TRUE){
               store.commit('changeAccessToken',res.data.accessToken);
             }
           })
+              .catch(function (err) {
+                console.log(err);
+              });
         }
         config.headers['Authorization'] = store.state.accessToken;
       }
