@@ -105,6 +105,7 @@
         caseNew['creatorId'] = idToken.id;
         caseNew['officeId'] = idToken.officeId;
         console.log("new-case: " + caseNew);
+        let _this = this;
         this.$api.cases.newCase(caseNew).then(function (res) {
           if(res.data.code === OK){
             // 成功
@@ -112,13 +113,13 @@
             // 删除 localStorage
             removeItem(LS_CASE_NEW);
             // 跳转
-            this.$router.push({name: 'caseDetail', params: {caseId: res.data.data}});
+            _this.$router.push({name: 'CaseDetail', params: {caseId: res.data.data}});
           }
           else{
             // 失败
-            this.snackbar.text = res.data.msg;
-            this.snackbar.color = "error";
-            this.snackbar.enable = true;
+            _this.snackbar.text = res.data.msg;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
           }
         })
         .catch(function (err) {
