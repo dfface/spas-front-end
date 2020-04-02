@@ -22,12 +22,12 @@ export default function(){
           setIdToken(result.data.idToken);
         }
         else{
-          alert(result.msg);
+          console.log("initial.js: " + result.msg);
         }
       })
     }
     else{
-      alert(res.msg)
+      console.log("initial.js: " + res.msg)
     }
     // 读不到更新的值，正常，vue 挂载完成之后其他的文件就可以读到了
     console.log("afterInit-isLoggedVuex：" + store.getters.getIsLogged);

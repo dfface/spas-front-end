@@ -24,8 +24,9 @@
           transition="scale-transition"
           width="40"
         />
-
-        <span id="system-title" class="display-1" @click="home">检察建议流程辅助办案系统</span>
+        <router-link to="/" class="display-1" style="text-decoration: none; color: aliceblue">
+        检察建议流程辅助办案系统
+        </router-link>
       </div>
 
       <v-spacer></v-spacer>
@@ -79,6 +80,7 @@
 
 <script>
 import {getIdToken} from './common/utils'
+import JWT from 'jwt-decode'
 export default {
   name: 'App',
   components: {
@@ -116,19 +118,28 @@ export default {
     }
   },
   methods: {
-    home(){
-      console.log("SystemTitleNowPath: " + this.$router.currentRoute.path);
-      if(this.$router.currentRoute.path !== '/'){
-        this.$router.push('/');
-      }
-    }
   },
   mounted() {
     window.addEventListener('offline', function(){
       // 网络(拔掉网线)由正常常到异常时触发
-      console.log("断网了");
-      alert("断网了");
+      console.log("App.vue: 断网了");
+      alert("App.vue: 断网了");
     });
+  },
+  updated() {
+    // 取 accessToken 中的角色信息
+    console.log("updated: 角色信息更新与否判断" + typeof this.$store.state.accessToken);
+    if(this.$store.state.accessToken !== ""){
+      let accessToken = JWT(this.$store.state.accessToken);
+      if(this.$store.state.roles.toString() !== accessToken.roles.toString()){  // 注意数组的比较方法
+        this.$store.commit('changeRoles',accessToken.roles);
+      }
+      if(this.$store.state.permissions.toString() !== accessToken.permissions.toString()){
+        this.$store.state.permissions = accessToken.permissions;
+      }
+      console.log(accessToken);
+    }
+
   }
 };
 </script>

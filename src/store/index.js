@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     isLogged: false,
     isOffline: false,
-    accessToken: ""
+    accessToken: "",
+    roles: [],
+    permissions: []
   },
   getters: {
     getIsLogged: state => state.isLogged
@@ -21,6 +23,12 @@ export default new Vuex.Store({
     },
     changeIsOffline(state, payload){
       state.isOffline = payload;
+    },
+    changePermissions(state, payload){
+      state.permissions = payload;
+    },
+    changeRoles(state, payload){
+      state.roles = payload;
     }
   },
   actions: {
