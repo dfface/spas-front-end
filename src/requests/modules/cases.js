@@ -6,5 +6,11 @@ export default {
   },
   detail(id){
     return axiosInstance.get(`${base.cases}/detail/${id}`);
+  },
+  handling(id){
+    return axiosInstance.get(`${base.cases}/handling/${id}`);
+  },
+  history(id,current){
+    return axiosInstance.get(`${base.cases}/history/${id}/${current}`);
   }
 }

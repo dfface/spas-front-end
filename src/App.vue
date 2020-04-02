@@ -29,7 +29,7 @@
       >
         <div
           class="mr-2"
-          v-text="idToken.officeName"
+          v-text="`${idToken.name}(${idToken.position}) : ${idToken.officeName}`"
           v-ripple
         />
         <v-icon>mdi-open-in-new</v-icon>
