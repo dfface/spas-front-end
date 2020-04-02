@@ -27,6 +27,12 @@ const routes = [
     meta: { notRequireAuth: true }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../components/Register'),
+    meta: { notRequireAuth: true }
+  },
+  {
     path: '/case/new',
     name: 'CaseNew',
     component: () => import('../components/case/New')

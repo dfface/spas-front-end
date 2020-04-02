@@ -128,6 +128,8 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .v-list-item-subtitle{
+    white-space: pre-line;
+  }
 </style>
