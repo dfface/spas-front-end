@@ -1,5 +1,14 @@
 <template>
   <v-app>
+    <v-slide-x-transition>
+      <v-alert
+        type="error"
+        v-model="isOffline"
+        min-width="300"
+      >
+        网络错误，请检查您的网络。
+      </v-alert>
+    </v-slide-x-transition>
     <v-app-bar
       app
       color="primary"
@@ -99,6 +108,9 @@ export default {
       // 只有这个是实时响应，cookie 做不到
       return this.$store.state.isLogged;
     },
+    isOffline(){
+      return this.$store.state.isOffline;
+    },
     idToken() {
       return getIdToken();
     }
@@ -110,6 +122,13 @@ export default {
         this.$router.push('/');
       }
     }
+  },
+  mounted() {
+    window.addEventListener('offline', function(){
+      // 网络(拔掉网线)由正常常到异常时触发
+      console.log("断网了");
+      alert("断网了");
+    });
   }
 };
 </script>
@@ -117,5 +136,11 @@ export default {
 <style lang="scss" scoped>
   #system-title{
     cursor: pointer;
+  }
+  .v-alert{
+    z-index: 10;
+    position: fixed;
+    top: 2px;
+    right: 2px;
   }
 </style>

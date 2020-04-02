@@ -48,6 +48,23 @@ axiosInstance.interceptors.request.use(
       return Promise.reject(error);
     }
 );
+axiosInstance.interceptors.response.use(response => {
+  if(store.state.isOffline === true){
+    store.commit('changeIsOffline',false);
+  }
+  if(response.data && response.data.err !== 0){
+    console.log("响应为空，异常！");
+  }
+  return response;
+}, error => {
+  if(!error.response){
+    // 断网了
+    console.log("响应有问题，应该是断网了");
+    if(store.state.isOffline === false){
+      store.commit('changeIsOffline',true);
+    }
+  }
+});
 
 // post 历史遗留封装
 export function post(url, object) {

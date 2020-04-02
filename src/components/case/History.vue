@@ -70,7 +70,8 @@
           else{
             _this.snackbar.enable = true;
           }
-        })
+        });
+        this.$vuetify.goTo(0);
       },
       input(){
         this.get();

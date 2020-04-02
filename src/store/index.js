@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLogged: false,
+    isOffline: false,
     accessToken: ""
   },
   getters: {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     changeAccessToken(state, payload){
       state.accessToken = payload;
+    },
+    changeIsOffline(state, payload){
+      state.isOffline = payload;
     }
   },
   actions: {
