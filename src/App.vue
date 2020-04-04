@@ -70,6 +70,25 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-list-group
+          group="suggestion"
+          v-model="drawerSuggestionItems.model"
+        >
+          <template slot="activator">
+            <v-list-item-title>{{ drawerSuggestionItems.title }}</v-list-item-title>
+          </template>
+        <v-list-item
+          v-for="(item,i) in getSuggestionItems"
+          :to="item.to"
+          :key="i"
+        >
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.title }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-content>
@@ -108,7 +127,23 @@ export default {
         {
           to: '/case/auditing',  // 如果不加开头的 / 将直接更改现在的URL（最后一个/换成现在的）
           title: '审核案件'
+        }
+      ]
+    },
+    drawerSuggestionItems: {
+      title: '检察建议管理',
+      model: false,
+      items: [
+        {
+          to: '/suggestion/new',
+          title: '新建检察建议'
         },
+        {
+          to: '/suggestion/revise',
+          title: '修改检察建议'
+        }
+      ],
+      itemsMoreChief: [
         {
           to: '/case/suggestion/auditing',
           title: '审核检察建议'
@@ -133,6 +168,14 @@ export default {
       }
       else{
         return this.drawerCaseItems.items;
+      }
+    },
+    getSuggestionItems(){
+      if(this.$store.state.roles.indexOf(ADMIN_ROLE_NAME) !== -1){
+        return [...this.drawerSuggestionItems.items, ...this.drawerSuggestionItems.itemsMoreChief];
+      }
+      else{
+        return this.drawerSuggestionItems.items;
       }
     }
   },
