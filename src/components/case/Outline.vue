@@ -37,10 +37,10 @@
       stateText() {
         console.log("case-outline-start");
         switch (this.state) {
-          case CASE_UNAUDITED: return  "未经审核";
+          case CASE_UNAUDITED: return  "等待审核";
           case CASE_AUDIT_NOT_PASSED: return  "审核不通过";
           case CASE_AUDIT_PASSED: return  "审核通过";
-          default: return "状态未知";
+          default: return "未知";
         }
       }
     }

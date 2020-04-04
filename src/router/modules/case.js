@@ -24,5 +24,11 @@ export default [
     path: '/case/auditing',
     name: 'CaseAuditing',
     component: () => import('../../components/case/Auditing')
+  },
+  {
+    path: '/case/revise/:id',
+    name: 'CaseRevise',
+    props: true,
+    component: () => import('../../components/case/Revise')
   }
 ]

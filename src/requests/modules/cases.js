@@ -15,5 +15,11 @@ export default {
   },
   auditing(id){
     return axiosInstance.get(`${base.cases}/auditing/${id}`);
+  },
+  updateState(id,state,opinion){
+    return axiosInstance.post(`${base.cases}/auditing/${id}/${state}`,opinion);
+  },
+  revise(data){
+    return axiosInstance.post(`${base.cases}/revise`,JSON.stringify(data))
   }
 }

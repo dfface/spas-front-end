@@ -80,6 +80,7 @@
 
 <script>
 import {getIdToken} from './common/utils'
+import {ADMIN_ROLE_NAME} from './common/settings'
 import JWT from 'jwt-decode'
 export default {
   name: 'App',
@@ -127,7 +128,7 @@ export default {
       return getIdToken();
     },
     getCasesItems() {
-      if(this.$store.state.roles.indexOf('chief_procurator') !== -1){
+      if(this.$store.state.roles.indexOf(ADMIN_ROLE_NAME) !== -1){
         return [...this.drawerCaseItems.items, ...this.drawerCaseItems.itemsMoreChief];
       }
       else{
