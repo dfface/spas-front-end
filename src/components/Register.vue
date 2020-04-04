@@ -79,7 +79,7 @@
                 :rules="[rules.required]"
                 placeholder="请选择您所在的部门"
                 v-model="user.departmentId"
-                v-if="user.officeId !== ''"
+                v-if="(user.officeId !== '') && (user.position !== '行政单位人员')"
               />
             </v-form>
           </v-card-text>

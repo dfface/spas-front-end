@@ -4,6 +4,9 @@ import Home from '../views/Home.vue'
 import {isLoggedCookie} from '../common/utils'
 import store from '../store'
 
+// 添加模块
+import cases from './modules/case'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,27 +35,7 @@ const routes = [
     component: () => import('../components/Register'),
     meta: { notRequireAuth: true }
   },
-  {
-    path: '/case/new',
-    name: 'CaseNew',
-    component: () => import('../components/case/New')
-  },
-  {
-    path: '/case/detail/:caseId',
-    name: 'CaseDetail',
-    props: true,
-    component: () => import('../components/case/Detail')
-  },
-  {
-    path: '/case/handling',
-    name: 'CaseHandling',
-    component: () => import('../components/case/Handling') // 大BUG：不是components 不要加s
-  },
-  {
-    path: '/case/history',
-    name: 'CaseHistory',
-    component: () => import('../components/case/History')
-  }
+    ...cases
 ];
 
 const router = new VueRouter({

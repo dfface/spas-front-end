@@ -12,5 +12,8 @@ export default {
   },
   history(id,current){
     return axiosInstance.get(`${base.cases}/history/${id}/${current}`);
+  },
+  auditing(id){
+    return axiosInstance.get(`${base.cases}/auditing/${id}`);
   }
 }

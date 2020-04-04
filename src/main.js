@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import created from './common/initial'
 import api from './requests/api'
+// import './mock/index'
 
 Vue.config.productionTip = false;
 Vue.prototype.$api = api;

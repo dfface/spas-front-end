@@ -60,7 +60,7 @@
             </v-list-item-content>
           </template>
           <v-list-item
-            v-for="item in drawerCaseItems.items"
+            v-for="item in getCasesItems"
             :to="item.to"
             :key="item.to">
             <v-list-item-content>
@@ -102,6 +102,16 @@ export default {
           to: '/case/history',
           title: '历史案件'
         }
+      ],
+      itemsMoreChief: [
+        {
+          to: '/case/auditing',  // 如果不加开头的 / 将直接更改现在的URL（最后一个/换成现在的）
+          title: '审核案件'
+        },
+        {
+          to: '/case/suggestion/auditing',
+          title: '审核检察建议'
+        }
       ]
     }
   }),
@@ -115,6 +125,14 @@ export default {
     },
     idToken() {
       return getIdToken();
+    },
+    getCasesItems() {
+      if(this.$store.state.roles.indexOf('chief_procurator') !== -1){
+        return [...this.drawerCaseItems.items, ...this.drawerCaseItems.itemsMoreChief];
+      }
+      else{
+        return this.drawerCaseItems.items;
+      }
     }
   },
   methods: {
