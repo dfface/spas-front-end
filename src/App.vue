@@ -136,18 +136,11 @@ export default {
       items: [
         {
           to: '/suggestion/new',
-          title: '新建检察建议'
-        },
-        {
-          to: '/suggestion/revise',
-          title: '修改检察建议'
+          title: '发出检察建议'
         }
       ],
       itemsMoreChief: [
-        {
-          to: '/case/suggestion/auditing',
-          title: '审核检察建议'
-        }
+
       ]
     }
   }),

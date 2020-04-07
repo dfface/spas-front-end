@@ -7,5 +7,9 @@ export const CASE_UNAUDITED = 1;
 export const CASE_AUDIT_NOT_PASSED = 2;
 export const CASE_AUDIT_PASSED = 3;
 
+// 检察建议相关状态
+export const SUGGESTION_ISSUED = 1;
+export const SUGGESTION_REPLIED = 2;
+
 // 本地存储名称
 export const LS_CASE_NEW = "caseNew";  // 案件新建

@@ -1,4 +1,5 @@
 export default {
   home: '',
-  cases: '/case'
+  cases: '/case',
+  suggestion: '/suggestion'
 }

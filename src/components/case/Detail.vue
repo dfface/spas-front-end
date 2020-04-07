@@ -89,7 +89,7 @@
   import {TIME_OUT_SNACKBAR, CASE_UNAUDITED, CASE_AUDIT_NOT_PASSED, CASE_AUDIT_PASSED, ADMIN_ROLE_NAME} from "../../common/settings";
 
   export default {
-    name: "Detail",
+    name: "CaseDetail",
     props: [
       'caseId'
     ],

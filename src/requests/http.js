@@ -49,11 +49,9 @@ axiosInstance.interceptors.request.use(
     }
 );
 axiosInstance.interceptors.response.use(response => {
+  console.log(response);
   if(store.state.isOffline === true){
     store.commit('changeIsOffline',false);
-  }
-  if(response.data && response.data.err !== 0){
-    console.log("http.js: 响应为空，异常！");
   }
   return response;
 }, error => {
