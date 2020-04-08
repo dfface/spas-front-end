@@ -137,10 +137,13 @@ export default {
         {
           to: '/suggestion/new',
           title: '发出检察建议'
+        },
+        {
+          to: '/suggestion/history',
+          title: '历史检察建议'
         }
       ],
       itemsMoreChief: [
-
       ]
     }
   }),

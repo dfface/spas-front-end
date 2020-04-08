@@ -10,5 +10,10 @@ export default [
     name: 'SuggestionDetail',
     props: true,
     component: () => import('../../components/suggestion/Detail')
+  },
+  {
+    path: '/suggestion/history',  // 不能掉最开头的斜杠
+    name: 'SuggestionHistory',
+    component: () => import('../../components/suggestion/History')
   }
 ]

@@ -10,9 +10,7 @@
           :state="c.state"
           :key="c.id"
         />
-        <v-lazy
-
-        >
+        <v-lazy>
           <v-pagination
             v-model="current"
             :length="length"
