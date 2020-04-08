@@ -15,6 +15,7 @@
       dark
       clipped-left
     >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogged"/>
       <div class="d-flex align-center">
         <v-img
           alt="Logo"
@@ -48,6 +49,7 @@
     <v-navigation-drawer
       app
       clipped
+      v-model="drawer"
       v-if="isLogged">
       <v-list>
         <v-list-group
@@ -89,6 +91,25 @@
           </v-list-item-content>
         </v-list-item>
         </v-list-group>
+        <v-list-group
+                group="suggestion"
+                v-model="drawerReportItems.model"
+        >
+          <template slot="activator">
+            <v-list-item-title>{{ drawerReportItems.title }}</v-list-item-title>
+          </template>
+          <v-list-item
+                  v-for="(item,i) in getReportItems"
+                  :to="item.to"
+                  :key="i"
+          >
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-content>
@@ -99,13 +120,14 @@
 
 <script>
 import {getIdToken} from './common/utils'
-import {ADMIN_ROLE_NAME} from './common/settings'
+import {ADMIN_ROLE_NAME, GOV_ROLE_NAME} from './common/settings'
 import JWT from 'jwt-decode'
 export default {
   name: 'App',
   components: {
   },
   data: () => ({
+    drawer: null,
     drawerCaseItems: {
       title: '案件管理',
       model: true,
@@ -145,6 +167,22 @@ export default {
       ],
       itemsMoreChief: [
       ]
+    },
+    drawerReportItems: {
+      title: '整改报告管理',
+      model: false,
+      items: [
+        {
+          to: '/report/evaluate',
+          title: '评估整改报告'
+        }
+      ],
+      itemsAboutGov: [
+        {
+          to: '/report/new',
+          title: '新建整改报告'
+        }
+      ]
     }
   }),
   computed: {
@@ -172,6 +210,14 @@ export default {
       }
       else{
         return this.drawerSuggestionItems.items;
+      }
+    },
+    getReportItems(){
+      if(this.$store.state.roles.indexOf(GOV_ROLE_NAME) !== -1){
+        return this.drawerReportItems.itemsAboutGov;
+      }
+      else{
+        return this.drawerReportItems.items;
       }
     }
   },

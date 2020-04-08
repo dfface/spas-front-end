@@ -60,7 +60,7 @@
                 prepend-icon="person"
                 type="text"
                 :rules="[rules.required]"
-                placeholder="请选择您的职位"
+                placeholder="请选择您的身份类别"
                 v-model="user.position"
               />
               <v-select
@@ -73,12 +73,12 @@
                 v-if="user.position !== '行政单位人员'"
               />
               <v-select
-                :items="department"
+                :items="role"
                 prepend-icon="person"
                 type="text"
                 :rules="[rules.required]"
-                placeholder="请选择您所在的部门"
-                v-model="user.departmentId"
+                placeholder="请选择您的角色，以待检察长审核"
+                v-model="user.roleId"
                 v-if="(user.officeId !== '') && (user.position !== '行政单位人员')"
               />
             </v-form>
@@ -118,7 +118,7 @@
       show1: false,
       show2: false,
       office: Object,  // 变化 对象格式，分为 text 和 value
-      department: Object,  // 变化
+      role: Object,  // 变化
       user: {
         name: "",
         email: "",
@@ -127,7 +127,7 @@
         positionAll: ["行政单位人员", "检察人员"],  // 不变 ， 删除 "检察长"
         position: "行政单位人员",  // 不变
         officeId: '',
-        departmentId: '',
+        roleId: '',
       },
       rules: {
         required: value => !!value || '此字段必须填写',
