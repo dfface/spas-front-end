@@ -3,13 +3,13 @@
  */
 import axios from 'axios'
 import store from '../store/index'
-import {TIME_TO_UPDATE_TOKEN} from '../common/settings'
+import {TIME_TO_UPDATE_TOKEN, BASE_URL} from '../common/settings'
 import {IS_LOGGED_TRUE} from './apiCode'
 import JWT from 'jwt-decode'
 
 let axiosInstance = axios.create();
 
-axiosInstance.defaults.baseURL = 'http://localhost:8888';
+axiosInstance.defaults.baseURL = BASE_URL;
 axiosInstance.defaults.timeout = 10000;  // 10s 超时
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 axiosInstance.defaults.withCredentials = true;  // 允许跨域携带 cookie
@@ -49,6 +49,7 @@ axiosInstance.interceptors.request.use(
     }
 );
 axiosInstance.interceptors.response.use(response => {
+  console.log("====== RESPONSE ======");
   console.log(response);
   if(store.state.isOffline === true){
     store.commit('changeIsOffline',false);

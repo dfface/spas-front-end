@@ -9,4 +9,7 @@ export default {
     // 使用了模板字面量
     return axios.get(`${base.home}/refresh`);
   },
+  register(data) {
+    return axios.post(`${base.home}/register`, JSON.stringify(data));
+  }
 }

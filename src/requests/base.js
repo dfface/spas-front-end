@@ -1,5 +1,7 @@
 export default {
   home: '',
   cases: '/case',
-  suggestion: '/suggestion'
+  suggestion: '/suggestion',
+  office: '/office',
+  role: '/role'
 }

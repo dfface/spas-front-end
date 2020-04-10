@@ -55,22 +55,16 @@
                 :rules="[rules.passwordVerify(user.passwordVer,user.password)]"
                 v-model="user.passwordVer"
               />
-              <v-select
-                :items="user.positionAll"
-                prepend-icon="person"
-                type="text"
-                :rules="[rules.required]"
-                placeholder="请选择您的身份类别"
-                v-model="user.position"
-              />
-              <v-select
+              <v-autocomplete
                 :items="office"
+                item-text="name"
+                item-value="id"
                 prepend-icon="person"
                 type="text"
                 :rules="[rules.required]"
                 placeholder="请选择您要关联的检察院"
                 v-model="user.officeId"
-                v-if="user.position !== '行政单位人员'"
+                @change="getRoles"
               />
               <v-select
                 :items="role"
@@ -79,7 +73,7 @@
                 :rules="[rules.required]"
                 placeholder="请选择您的角色，以待检察长审核"
                 v-model="user.roleId"
-                v-if="(user.officeId !== '') && (user.position !== '行政单位人员')"
+                v-if="(user.officeId !== '')"
               />
             </v-form>
           </v-card-text>
@@ -111,21 +105,20 @@
 
 <script>
   import {TIME_OUT_SNACKBAR} from "../common/settings";
+  import {ALREADY_REGISTERED, OK} from "../requests/apiCode";
 
   export default {
     name: "Register",
     data: () => ({
       show1: false,
       show2: false,
-      office: Object,  // 变化 对象格式，分为 text 和 value
-      role: Object,  // 变化
+      office: [],  // 变化 对象格式，分为 text 和 value
+      role: [],  // 变化
       user: {
         name: "",
         email: "",
         password: "",
         passwordVer: "",
-        positionAll: ["行政单位人员", "检察人员"],  // 不变 ， 删除 "检察长"
-        position: "行政单位人员",  // 不变
         officeId: '',
         roleId: '',
       },
@@ -143,37 +136,75 @@
       },
     }),
     methods: {
+      getRoles(){
+        console.log("Register-user.officeId: " + this.user.officeId);
+        let _this = this;
+        this.$api.role.all(this.user.officeId).then(function (res) {
+          if(res.data.code === OK){
+            _this.role = res.data.data.map(entry => Object.assign({}, {text: entry.description, value: entry.id}))
+          }
+        });
+        console.log(this.role);
+      },
+      getPosition(id) {
+        for( let {text, value} of this.role){
+          if(value === id){
+            return text;
+          }
+        }
+      },
+      getOfficeName(officeId){
+        for(let {id, name} of this.office){
+          if(id === officeId){
+            return name;
+          }
+        }
+      },
       toRegister() {
         let user = {
           name: this.user.name,
           email: this.user.email,
           password: this.user.password,
-          position: this.user.position,
           officeId: this.user.officeId,
-          departmentId: this.user.departmentId
+          roleId: this.user.roleId,
+          position: this.getPosition(this.user.roleId) || '',
+          officeName: this.getOfficeName(this.user.officeId) || ''
         };
         console.log(user);
+        let _this = this;
+        this.$api.home.register(user).then(function (res) {
+          if(res.data.code === OK){
+            console.log("申请的用户id：" + res.data.data);
+            _this.snackbar.text = "注册成功，请等待审核！";
+            _this.snackbar.color = "success";
+            _this.snackbar.enable = true;
+            setTimeout(function () {
+              _this.$router.push("/login");
+            }, TIME_OUT_SNACKBAR);
+          }
+          else if(res.data.code === ALREADY_REGISTERED){
+            _this.snackbar.text = res.data.msg;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          }
+        })
+        .catch(function (err) {
+          _this.snackbar.text = "遇到了问题：" + err;
+          _this.snackbar.color = "error";
+          _this.snackbar.enable = true;
+        })
       },
     },
     mounted() {
-      let office =  [
-        {
-          text: '内江市人民检察院',
-          value: 'a887c5eb331721807d88f4e9c40e2dcd'
-        },
-        {
-          text: '宜昌市人民检察院',
-          value: '74a708c6a4d8f4bf55035540bc5adb81'
+      let _this = this;
+      // 获取检察院
+      this.$api.office.all().then(function (res) {
+        if(res.data.code ===  OK){
+          _this.office = res.data.data.map(entry => {
+            return Object.assign({}, {id: entry.id}, {name: entry.name});
+          })
         }
-      ];
-      let department = [
-        {
-          text: '检察一组',
-          value: '494a49c4e895a791b61e53df257f9f60'
-        }
-      ];
-      this.office = office;
-      this.department = department;
+      });
     }
   }
 </script>

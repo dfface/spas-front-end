@@ -7,6 +7,8 @@ import axiosInstance from './http'
 import home from "./modules/home";
 import cases from "./modules/cases";
 import suggestion from './modules/suggestion';
+import office from "./modules/office";
+import role from "./modules/role";
 
 // 历史遗留
 export const apiIsLogged = () => get('/isLogged');
@@ -17,6 +19,8 @@ export const apiInit = () => get('/init');
 axiosInstance['home'] = home;
 axiosInstance['cases'] = cases;
 axiosInstance['suggestion'] = suggestion;
+axiosInstance['office'] = office;
+axiosInstance['role'] = role;
 
 export default axiosInstance;
 
