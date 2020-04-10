@@ -19,6 +19,15 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
+              <v-autocomplete
+                :items="office"
+                item-text="name"
+                item-value="id"
+                prepend-icon="person"
+                type="text"
+                placeholder="请选择您要登入的检察院"
+                v-model="officeId"
+              />
               <v-text-field
                 name="login"
                 prepend-icon="person"
@@ -62,7 +71,7 @@
 
 <script>
   import {apiLogin,apiIsLogged} from '../requests/api'
-  import {LOGIN_SUCCESS,IS_LOGGED_TRUE} from '../requests/apiCode'
+  import {LOGIN_SUCCESS, IS_LOGGED_TRUE, OK, USER_AUDIT_NOT_PASSED} from '../requests/apiCode'
   import {mapMutations} from 'vuex'
   import {setIdToken} from '../common/utils'
   import {TIME_OUT_SNACKBAR} from '../common/settings'
@@ -71,6 +80,8 @@
     name: "Login",
     data(){
       return {
+        office: Object,
+        officeId: "",
         email: "",
         password: "",
         snackbar: {
@@ -95,7 +106,7 @@
           }
           else {
             // 一个重要问题是找不到 this
-            apiLogin(_this.email,_this.password).then(function (res) {
+            apiLogin(_this.officeId, _this.email,_this.password).then(function (res) {
               console.log("Login: " + res.msg);
               if(res.code === LOGIN_SUCCESS){
                 let idTokenUnparse = res.data.idToken;
@@ -108,8 +119,14 @@
                 // 转到主页
                 _this.$router.push('/');
               }
+              else if(res.code === USER_AUDIT_NOT_PASSED){
+                _this.snackbar.color = "error";
+                _this.snackbar.text = res.msg;
+                _this.snackbar.enable = true;
+              }
               else{
                 // 已经登录，弹窗提示
+                _this.snackbar.color = "error";
                 _this.snackbar.text = res.msg;
                 _this.snackbar.enable = true;
               }
@@ -120,6 +137,17 @@
           console.log("遇到了一个问题：" + err);
         });
       }
+    },
+    mounted() {
+      let _this = this;
+      // 获取检察院
+      this.$api.office.all().then(function (res) {
+        if(res.data.code ===  OK){
+          _this.office = res.data.data.map(entry => {
+            return Object.assign({}, {id: entry.id}, {name: entry.name});
+          })
+        }
+      });
     }
   }
 </script>
