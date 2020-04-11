@@ -32,6 +32,27 @@
 
       <v-spacer></v-spacer>
 
+      <v-menu offset-y v-if="isLogged">
+        <template v-slot:activator="{ on }">
+          <v-btn
+            text
+            v-on="on"
+          >
+            {{ `${idToken.name}(${idToken.position})` }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in userItems"
+            :key="index"
+            @click="userItemsMethods(item.method)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+
       <v-btn
         :href="idToken.officeUrl"
         target="_blank"
@@ -40,7 +61,7 @@
       >
         <div
           class="mr-2"
-          v-text="`${idToken.name}(${idToken.position}) : ${idToken.officeName}`"
+          v-text="`${idToken.officeName}`"
           v-ripple
         />
         <v-icon>mdi-open-in-new</v-icon>
@@ -77,7 +98,9 @@
           v-model="drawerSuggestionItems.model"
         >
           <template slot="activator">
+            <v-list-item-content>
             <v-list-item-title>{{ drawerSuggestionItems.title }}</v-list-item-title>
+            </v-list-item-content>
           </template>
         <v-list-item
           v-for="(item,i) in getSuggestionItems"
@@ -92,16 +115,18 @@
         </v-list-item>
         </v-list-group>
         <v-list-group
-                group="suggestion"
-                v-model="drawerReportItems.model"
+          group="report"
+          v-model="drawerReportItems.model"
         >
           <template slot="activator">
+            <v-list-item-content>
             <v-list-item-title>{{ drawerReportItems.title }}</v-list-item-title>
+            </v-list-item-content>
           </template>
           <v-list-item
-                  v-for="(item,i) in getReportItems"
-                  :to="item.to"
-                  :key="i"
+            v-for="(item,i) in getReportItems"
+            :to="item.to"
+            :key="i"
           >
             <v-list-item-content>
               <v-list-item-title>
@@ -115,19 +140,43 @@
     <v-content>
       <router-view/>
     </v-content>
+    <v-slide-x-transition>
+      <v-snackbar
+        right
+        top
+        :timeout="snackbar.timeout"
+        :color="snackbar.color"
+        v-model="snackbar.enable"
+      >
+        {{ snackbar.text }}
+      </v-snackbar>
+    </v-slide-x-transition>
   </v-app>
 </template>
 
 <script>
 import {getIdToken} from './common/utils'
-import {ADMIN_ROLE_NAME, GOV_ROLE_NAME} from './common/settings'
+import {ADMIN_ROLE_NAME, GOV_ROLE_NAME, TIME_OUT_SNACKBAR} from './common/settings'
 import JWT from 'jwt-decode'
+import {IS_LOGGED_FALSE, LOGOUT_FAILED, LOGOUT_SUCCESS} from "./requests/apiCode";
 export default {
   name: 'App',
   components: {
   },
   data: () => ({
     drawer: null,
+    snackbar: {
+      enable: false,
+      text: "",
+      color: "error",
+      timeout: TIME_OUT_SNACKBAR
+    },
+    userItems: [
+      {
+        title: '退出',
+        method: 'logout'
+      }
+    ],
     drawerCaseItems: {
       title: '案件管理',
       model: true,
@@ -222,6 +271,42 @@ export default {
     }
   },
   methods: {
+    userItemsMethods(method) {
+      // 使用计算属性
+      this[method]();
+    },
+    logout(){
+      let userId = getIdToken().id;
+      let _this = this;
+      this.$api.home.logout(userId).then(function (res) {
+        if(res.data.code === LOGOUT_SUCCESS){
+          // 提交状态信息
+          _this.$store.commit("changeIsLogged",false);
+          _this.$store.commit("changeAccessToken", "");
+          _this.$router.push('/login');
+        }
+        else if(res.data.code === LOGOUT_FAILED){
+          _this.snackbar.text = res.data.msg;
+          _this.snackbar.color = "error";
+          _this.snackbar.enable = true;
+        }
+        else if(res.data.code === IS_LOGGED_FALSE){
+          _this.snackbar.text = res.data.msg;
+          _this.snackbar.color = "error";
+          _this.snackbar.enable = true;
+        }
+        else{
+          _this.snackbar.text = "出了点问题";
+          _this.snackbar.color = "error";
+          _this.snackbar.enable = true;
+        }
+      })
+      .catch(function (err) {
+        _this.snackbar.text = "出了点问题" + err.value;
+        _this.snackbar.color = "error";
+        _this.snackbar.enable = true;
+      })
+    }
   },
   mounted() {
     window.addEventListener('offline', function(){
@@ -245,7 +330,7 @@ export default {
     }
 
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

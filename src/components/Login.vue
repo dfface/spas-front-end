@@ -80,7 +80,7 @@
     name: "Login",
     data(){
       return {
-        office: Object,
+        office: [],
         officeId: "",
         email: "",
         password: "",
@@ -147,6 +147,7 @@
             return Object.assign({}, {id: entry.id}, {name: entry.name});
           })
         }
+        console.log(_this.office);
       });
     }
   }

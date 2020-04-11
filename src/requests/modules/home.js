@@ -11,5 +11,8 @@ export default {
   },
   register(data) {
     return axios.post(`${base.home}/register`, JSON.stringify(data));
+  },
+  logout(userId){
+    return axios.get(`${base.home}/logout/${userId}`);
   }
 }

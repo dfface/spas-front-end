@@ -12,7 +12,7 @@ import role from "./modules/role";
 
 // 历史遗留
 export const apiIsLogged = () => get('/isLogged');
-export const apiLogin = (officeId, email, password) => post('/login',JSON.stringify({officeId: officeId, email: email, password: password}));
+export const apiLogin = (officeId, email, password) => post('/login',{officeId: officeId, email: email, password: password});
 export const apiInit = () => get('/init');
 
 // 新的模块化方式
