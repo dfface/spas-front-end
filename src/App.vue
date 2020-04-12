@@ -25,7 +25,7 @@
           transition="scale-transition"
           width="40"
         />
-        <router-link to="/" class="display-1" style="text-decoration: none; color: aliceblue">
+        <router-link to="/" class="display-1 d-md-flex d-none" style="text-decoration: none; color: aliceblue">
         检察建议流程辅助办案系统
         </router-link>
       </div>

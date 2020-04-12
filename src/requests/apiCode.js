@@ -17,3 +17,4 @@ export const LOGOUT_FAILED = 210;
 
 // 业务相关
 export const UNAUDITED = 301;
+export const REPORT_HAS_BEEN_JUDGED = 302;

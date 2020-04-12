@@ -83,6 +83,11 @@
           </v-btn>
       </v-col>
     </v-row>
+    <v-row v-if="this.$store.state.roles.indexOf('administrative_personnel') !== -1 && reportDetail.state === 1">
+      <v-col>
+        <v-btn color="primary" class="mx-2" :to="`/report/revise/${reportDetail.id}`">修改</v-btn>
+      </v-col>
+    </v-row>
     <v-slide-x-transition>
       <v-snackbar
         right

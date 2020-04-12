@@ -41,7 +41,9 @@
           @click="reviseCase"
         >修改
         </v-btn>
-        <span class="font-weight-light">上次修改时间：{{ cases.updateTime }}</span>
+        <span class="font-weight-light">上次修改时间：
+          {{ new Date(cases.updateTime).toLocaleDateString() + " " +  new Date(cases.updateTime).toLocaleTimeString()}}
+        </span>
       </v-col>
     </v-row>
     <v-snackbar

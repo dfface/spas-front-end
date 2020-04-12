@@ -23,5 +23,8 @@ export default {
   evaluating(){
     let idToken = getIdToken();
     return axiosInstance.get(`${base.report}/evaluating/${idToken.id}`);
+  },
+  revise(reportId,data){
+    return axiosInstance.post(`${base.report}/revise/${reportId}`,JSON.stringify(data));
   }
 }

@@ -26,5 +26,11 @@ export default [
     path: '/report/evaluating',
     name: 'ReportEvaluating',
     component: () => import('../../components/report/Evaluating')
+  },
+  {
+    path: '/report/revise/:id',
+    name: 'ReportRevise',
+    props: true,
+    component: () => import('../../components/report/Revise')
   }
 ]

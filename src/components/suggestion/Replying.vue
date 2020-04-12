@@ -2,6 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
+        <v-content v-if="suggestionList.length === 0">提示：暂时没有需要回复的检察建议</v-content>
         <SuggestionOutline
           v-for="item in suggestionList"
           :suggestion="item"
