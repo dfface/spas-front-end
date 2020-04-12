@@ -15,5 +15,11 @@ export default [
     path: '/suggestion/history',  // 不能掉最开头的斜杠
     name: 'SuggestionHistory',
     component: () => import('../../components/suggestion/History')
+  },
+  {
+    path: '/suggestion/associate',
+    name: 'SuggestionAssociate',
+    component: () => import('../../components/suggestion/Associate')
   }
+
 ]

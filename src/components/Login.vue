@@ -39,12 +39,19 @@
                 name="password"
                 prepend-icon="lock"
                 type="password"
+                placeholder="请输入您的密码"
                 v-model="password"
               />
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer/>
+            <v-btn
+              color="primary"
+              to="/register"
+            >
+              注册
+            </v-btn>
             <v-btn
               color="primary"
               @click="login"

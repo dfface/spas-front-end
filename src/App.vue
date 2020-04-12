@@ -76,6 +76,7 @@
         <v-list-group
           group="case"
           v-model="drawerCaseItems.model"
+          v-if="idToken.roles.indexOf('procurator') !== -1"
         >
           <template slot="activator">
             <v-list-item-content>
@@ -215,6 +216,12 @@ export default {
         }
       ],
       itemsMoreChief: [
+      ],
+      itemsForGov: [
+        {
+          to: '/suggestion/associate',
+          title: '关联检察建议'
+        }
       ]
     },
     drawerReportItems: {
@@ -256,6 +263,9 @@ export default {
     getSuggestionItems(){
       if(this.$store.state.roles.indexOf(ADMIN_ROLE_NAME) !== -1){
         return [...this.drawerSuggestionItems.items, ...this.drawerSuggestionItems.itemsMoreChief];
+      }
+      else if(this.$store.state.roles.indexOf(GOV_ROLE_NAME) !== -1){
+        return this.drawerSuggestionItems.itemsForGov;
       }
       else{
         return this.drawerSuggestionItems.items;

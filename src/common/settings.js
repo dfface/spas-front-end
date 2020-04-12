@@ -25,10 +25,20 @@ export const USER_ROLE_PASSED = 3;
 export const CASE_UNAUDITED = 1;
 export const CASE_AUDIT_NOT_PASSED = 2;
 export const CASE_AUDIT_PASSED = 3;
+export const CASE_FINISHED = 4;
+export const CASE_PROSECUTE = 5;
 
 // 检察建议相关状态
-export const SUGGESTION_ISSUED = 1;
-export const SUGGESTION_REPLIED = 2;
+export const SUGGESTION_ISSUED = 1;  // 整改情况：等待新一轮
+export const SUGGESTION_REPLIED = 2;  // 整改情况：完成
+
+// 整改报告相关状态
+export const REPORT_NOT_JUDGE = 1;
+export const REPORT_JUDGED = 2;
+// 情况严重性判断
+export const SITUATION_FINISHED = 1;  // 完成
+export const SITUATION_SERIOUS = 2;  // 起诉
+export const SITUATION_RECTIFY = 3;  // 等待新一轮报告
 
 // 本地存储名称
 export const LS_CASE_NEW = "caseNew";  // 案件新建
