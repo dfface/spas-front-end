@@ -31,14 +31,14 @@
       </div>
 
       <v-spacer></v-spacer>
-
+<!--     用户菜单：登出-->
       <v-menu offset-y v-if="isLogged">
         <template v-slot:activator="{ on }">
           <v-btn
             text
             v-on="on"
           >
-            {{ `${idToken.name}(${idToken.position})` }}
+            {{ `${getId().name}(${getId().position})` }}
           </v-btn>
         </template>
         <v-list>
@@ -54,14 +54,14 @@
 
 
       <v-btn
-        :href="idToken.officeUrl"
+        :href="getId().officeUrl"
         target="_blank"
         text
         v-if="isLogged"
       >
         <div
           class="mr-2"
-          v-text="`${idToken.officeName}`"
+          v-text="`${getId().officeName}`"
           v-ripple
         />
         <v-icon>mdi-open-in-new</v-icon>
@@ -76,7 +76,7 @@
         <v-list-group
           group="case"
           v-model="drawerCaseItems.model"
-          v-if="idToken.roles.indexOf('procurator') !== -1"
+          v-if="this.$store.state.roles.indexOf('procurator') !== -1"
         >
           <template slot="activator">
             <v-list-item-content>
@@ -221,6 +221,14 @@ export default {
         {
           to: '/suggestion/associate',
           title: '关联检察建议'
+        },
+        {
+          to: '/suggestion/replying',
+          title: '正在处理'
+        },
+        {
+          to: '/suggestion/reply-history',
+          title: '历史关联'
         }
       ]
     },
@@ -233,7 +241,7 @@ export default {
           title: '评估整改报告'
         }
       ],
-      itemsAboutGov: [
+      itemsForGov: [
         {
           to: '/report/new',
           title: '新建整改报告'
@@ -250,7 +258,7 @@ export default {
       return this.$store.state.isOffline;
     },
     idToken() {
-      return getIdToken();
+      return getIdToken();  // 一旦获取之后，它就没有变过，切换账号就会出问题，因此应选择调用方法
     },
     getCasesItems() {
       if(this.$store.state.roles.indexOf(ADMIN_ROLE_NAME) !== -1){
@@ -273,7 +281,7 @@ export default {
     },
     getReportItems(){
       if(this.$store.state.roles.indexOf(GOV_ROLE_NAME) !== -1){
-        return this.drawerReportItems.itemsAboutGov;
+        return this.drawerReportItems.itemsForGov;
       }
       else{
         return this.drawerReportItems.items;
@@ -281,6 +289,9 @@ export default {
     }
   },
   methods: {
+    getId(){
+      return getIdToken();
+    },
     userItemsMethods(method) {
       // 使用计算属性
       this[method]();

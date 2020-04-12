@@ -2,6 +2,7 @@ import axiosInstance from "../http";
 import base from "../base";
 import {getIdToken} from "../../common/utils";
 export default {
+  idToken : getIdToken(),
   newSuggestion(data){  // new 是关键字啊
     return axiosInstance.post(`${base.suggestion}/new`,JSON.stringify(data));
   },
@@ -11,5 +12,16 @@ export default {
   history(current){
     let id = getIdToken().id;
     return axiosInstance.get(`${base.suggestion}/history/${id}/${current}`);
+  },
+  associate(sugId){
+    let idToken = getIdToken();
+    return axiosInstance.post(`${base.suggestion}/associate/${idToken.id}/${sugId}/${idToken.officeId}`);
+  },
+  replying(){
+    let idToken = getIdToken();
+    return axiosInstance.get(`${base.suggestion}/replying/${idToken.id}/${idToken.officeId}`);
+  },
+  replyHistory(current){
+    return axiosInstance.get(`${base.suggestion}/replyHistory/${this.idToken.id}/${current}`);
   }
 }

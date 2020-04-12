@@ -27,11 +27,14 @@
   import {OK} from "../../requests/apiCode";
   export default {
     name: "SuggestionHistory",
+    props: [
+      'isGov'
+    ],
     components: {
       SuggestionOutline
     },
     data: () => ({
-      suggestions: Object,
+      suggestions: [],
       current: 1,
       length: 5
     }),
@@ -50,15 +53,28 @@
     },
     mounted() {
       let _this = this;
-      this.$api.suggestion.history(1).then(function (res) {
-        console.log(res);
-        if(res.data.code === OK){
-          _this.current = res.data.data.current;
-          _this.length = res.data.data.count;
-          _this.suggestions = res.data.data.content;
-          _this.$vuetify.goTo(0);
-        }
-      })
+      if(!this.isGov){
+        this.$api.suggestion.history(1).then(function (res) {
+          console.log(res);
+          if(res.data.code === OK){
+            _this.current = res.data.data.current;
+            _this.length = res.data.data.count;
+            _this.suggestions = res.data.data.content;
+            _this.$vuetify.goTo(0);
+          }
+        })
+      }
+      else{
+        this.$api.suggestion.replyHistory(1).then(function (res) {
+          console.log(res);
+          if(res.data.code === OK){
+            _this.current = res.data.data.current;
+            _this.length = res.data.data.count;
+            _this.suggestions = res.data.data.content;
+            _this.$vuetify.goTo(0);
+          }
+        })
+      }
     }
   }
 </script>

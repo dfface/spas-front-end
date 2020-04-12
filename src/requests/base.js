@@ -3,5 +3,6 @@ export default {
   cases: '/case',
   suggestion: '/suggestion',
   office: '/office',
-  role: '/role'
+  role: '/role',
+  report: '/report'
 }

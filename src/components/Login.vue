@@ -115,6 +115,7 @@
             // 一个重要问题是找不到 this
             apiLogin(_this.officeId, _this.email,_this.password).then(function (res) {
               console.log("Login: " + res.msg);
+              console.log(res);
               if(res.code === LOGIN_SUCCESS){
                 let idTokenUnparse = res.data.idToken;
                 let accessToken = res.data.accessToken;

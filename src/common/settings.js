@@ -29,8 +29,11 @@ export const CASE_FINISHED = 4;
 export const CASE_PROSECUTE = 5;
 
 // 检察建议相关状态
-export const SUGGESTION_ISSUED = 1;  // 整改情况：等待新一轮
-export const SUGGESTION_REPLIED = 2;  // 整改情况：完成
+export const SUGGESTION_ISSUED = 1;  // 等待回复
+export const SUGGESTION_REPLIED = 2;  // 已回复，等待评价
+export const SUGGESTION_NEED_NEW_REPLY = 3; // 整改情况：等待新一轮
+export const SUGGESTION_FINISHED = 4; // 整改完成
+export const SUGGESTION_TO_PROSECUTE = 5; // 准备起诉
 
 // 整改报告相关状态
 export const REPORT_NOT_JUDGE = 1;

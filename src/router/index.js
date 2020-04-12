@@ -7,6 +7,7 @@ import store from '../store'
 // 添加模块
 import cases from './modules/case'
 import suggestion from "./modules/suggestion";
+import report from "./modules/report";
 
 Vue.use(VueRouter);
 
@@ -36,8 +37,9 @@ const routes = [
     component: () => import('../components/Register'),
     meta: { notRequireAuth: true }
   },
-    ...cases,
-    ...suggestion
+  ...cases,
+  ...suggestion,
+  ...report
 ];
 
 const router = new VueRouter({

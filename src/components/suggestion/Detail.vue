@@ -45,16 +45,16 @@
             </v-list-item-content>
           </v-list-item>
           <v-menu
-                  v-model="menu.enable"
-                  fixed
-                  open-on-hover
-                  max-width="1000"
+            v-model="menu.enable"
+            fixed
+            offset-overflow
+            max-width="1000"
           >
             <template v-slot:activator="{ on }">
-              <v-list-item v-on="on" :to="`/case/detail/${suggestion.caseId}`">
+              <v-list-item v-on="on">
                 <v-list-item-content>
                   <v-list-item-title class="title">关联的案件</v-list-item-title>
-                  <v-list-item-subtitle class="grey--text"> 鼠标悬浮以显示 </v-list-item-subtitle>
+                  <v-list-item-subtitle class="grey--text"> 鼠标单击以显示 </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-  import {SUGGESTION_ISSUED, SUGGESTION_REPLIED, TIME_OUT_SNACKBAR} from "../../common/settings";
+  import {SUGGESTION_ISSUED, SUGGESTION_REPLIED, TIME_OUT_SNACKBAR, SUGGESTION_NEED_NEW_REPLY, SUGGESTION_FINISHED, SUGGESTION_TO_PROSECUTE} from "../../common/settings";
   import CaseDetail from "../case/Detail";
   import {OK} from "../../requests/apiCode";
   export default {
@@ -114,7 +114,10 @@
           _this.suggestion = res.data.data;
           switch (res.data.data.state) {
             case SUGGESTION_ISSUED: _this.suggestion.stateText = "等待回复"; break;
-            case SUGGESTION_REPLIED: _this.suggestion.stateText = "已回复"; break;
+            case SUGGESTION_REPLIED: _this.suggestion.stateText = "已回复，等待评价"; break;
+            case SUGGESTION_NEED_NEW_REPLY: _this.suggestion.stateText = "等待新一轮整改后回复"; break;
+            case SUGGESTION_FINISHED: _this.suggestion.stateText = "整改完成，完全履职"; break;
+            case SUGGESTION_TO_PROSECUTE: _this.suggestion.stateText = "已准备起诉"; break;
             default: _this.suggestion.stateText = "未知"; break;
           }
           _this.suggestion.createTime = new Date(res.data.data.createTime).toLocaleDateString() + ' ' + new Date(res.data.data.createTime).toLocaleTimeString();

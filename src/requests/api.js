@@ -9,6 +9,7 @@ import cases from "./modules/cases";
 import suggestion from './modules/suggestion';
 import office from "./modules/office";
 import role from "./modules/role";
+import report from "./modules/report";
 
 // 历史遗留
 export const apiIsLogged = () => get('/isLogged');
@@ -21,6 +22,7 @@ axiosInstance['cases'] = cases;
 axiosInstance['suggestion'] = suggestion;
 axiosInstance['office'] = office;
 axiosInstance['role'] = role;
+axiosInstance['report'] = report;
 
 export default axiosInstance;
 

@@ -34,6 +34,7 @@
 
 <script>
   import {TIME_OUT_SNACKBAR} from "../../common/settings";
+  import {OK} from "../../requests/apiCode";
 
   export default {
     name: "Associate",
@@ -49,6 +50,27 @@
     methods: {
       doAssociate(){
         console.log(this.secret);
+        let _this = this;
+        this.$api.suggestion.associate(this.secret).then(function (res) {
+          if(res.data.code === OK){
+            _this.snackbar.text = "关联检察建议成功";
+            _this.snackbar.color = "success";
+            _this.snackbar.enable = true;
+            setTimeout(function () {
+              _this.$router.push('/suggestion/replying');
+            },_this.snackbar.timeout);
+          }
+          else{
+            _this.snackbar.text = "遇到点问题";
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          }
+        })
+        .catch(function (err) {
+          _this.snackbar.text = "遇到点问题： " + err.value;
+          _this.snackbar.color = "error";
+          _this.snackbar.enable = true;
+        })
       }
     }
   }
