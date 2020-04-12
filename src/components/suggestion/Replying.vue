@@ -29,6 +29,9 @@
   import {TIME_OUT_SNACKBAR} from "../../common/settings";
   export default {
     name: "Replying",
+    props: [
+      'isGov'
+    ],
     components: {
       SuggestionOutline
     },
@@ -43,21 +46,38 @@
     }),
     mounted() {
       let _this = this;
-      this.$api.suggestion.replying().then(function (res) {
-        if(res.data.code === OK){
-          _this.suggestionList = res.data.data;
-        }
-        else{
-          _this.snackbar.text = "遇到点问题: " + res.data.msg;
-          _this.snackbar.color = "error";
-          _this.snackbar.enable = true;
-        }
-      })
-      .catch(function (err) {
-        _this.snackbar.text = "遇到点问题； " + err.value;
-        _this.snackbar.color = "error";
-        _this.snackbar.enable = true;
-      })
+      if (this.isGov) {
+        this.$api.suggestion.replying().then(function (res) {
+          if (res.data.code === OK) {
+            _this.suggestionList = res.data.data;
+          } else {
+            _this.snackbar.text = "遇到点问题: " + res.data.msg;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          }
+        })
+          .catch(function (err) {
+            _this.snackbar.text = "遇到点问题； " + err.value;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          })
+      }
+      else{
+        this.$api.suggestion.waitingReply().then(function (res) {
+          if (res.data.code === OK) {
+            _this.suggestionList = res.data.data;
+          } else {
+            _this.snackbar.text = "遇到点问题: " + res.data.msg;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          }
+        })
+          .catch(function (err) {
+            _this.snackbar.text = "遇到点问题； " + err.value;
+            _this.snackbar.color = "error";
+            _this.snackbar.enable = true;
+          })
+      }
     }
   }
 </script>

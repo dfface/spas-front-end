@@ -211,6 +211,10 @@ export default {
           title: '发出检察建议'
         },
         {
+          to: '/suggestion/waiting-reply',
+          title: '正等待处理中'
+        },
+        {
           to: '/suggestion/history',
           title: '历史检察建议'
         }
@@ -245,6 +249,10 @@ export default {
         {
           to: '/report/new',
           title: '新建整改报告'
+        },
+        {
+          to: '/report/history',
+          title: '历史整改报告'
         }
       ]
     }

@@ -22,6 +22,11 @@ export default {
     return axiosInstance.get(`${base.suggestion}/replying/${idToken.id}/${idToken.officeId}`);
   },
   replyHistory(current){
-    return axiosInstance.get(`${base.suggestion}/replyHistory/${this.idToken.id}/${current}`);
+    let idToken = getIdToken();
+    return axiosInstance.get(`${base.suggestion}/replyHistory/${idToken.id}/${current}`);
+  },
+  waitingReply(){
+    let idToken = getIdToken();
+    return axiosInstance.get(`${base.suggestion}/waitingReply/${idToken.id}/${idToken.officeId}`);
   }
 }

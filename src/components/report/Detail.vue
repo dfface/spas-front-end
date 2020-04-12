@@ -33,12 +33,6 @@
               <v-list-item-subtitle> {{ new Date(reportDetail.updateTime).toLocaleDateString() + " " + new Date(reportDetail.updateTime).toLocaleTimeString() || '暂无' }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="title"> 创建人id </v-list-item-title>
-              <v-list-item-subtitle> {{ reportDetail.creatorId || '暂无' }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
           <v-menu
             v-model="menu.enable"
             fixed

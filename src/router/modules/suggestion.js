@@ -25,6 +25,7 @@ export default [
   {
     path: '/suggestion/replying',
     name: 'SuggestionReplying',
+    props: {isGov: true},
     component: () => import('../../components/suggestion/Replying')
   },
   {
@@ -32,6 +33,12 @@ export default [
     name: 'SuggestionReplyHistory',
     props: {isGov: true},
     component: () => import('../../components/suggestion/History')
+  },
+  {
+    path: '/suggestion/waiting-reply',
+    name: 'SuggestionWaitingReply',
+    props: {isGov: false},
+    component: () => import('../../components/suggestion/Replying')
   }
 
 ]

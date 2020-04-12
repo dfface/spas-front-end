@@ -81,7 +81,14 @@
 </template>
 
 <script>
-  import {SUGGESTION_ISSUED, SUGGESTION_REPLIED, TIME_OUT_SNACKBAR, SUGGESTION_NEED_NEW_REPLY, SUGGESTION_FINISHED, SUGGESTION_TO_PROSECUTE} from "../../common/settings";
+  import {
+    SUGGESTION_ISSUED,
+    SUGGESTION_REPLIED,
+    TIME_OUT_SNACKBAR,
+    SUGGESTION_NEED_NEW_REPLY,
+    SUGGESTION_FINISHED,
+    SUGGESTION_TO_PROSECUTE
+  } from "../../common/settings";
   import CaseDetail from "../case/Detail";
   import {OK} from "../../requests/apiCode";
   export default {

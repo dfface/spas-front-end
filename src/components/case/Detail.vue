@@ -54,7 +54,7 @@
         </v-list>
       </v-col>
     </v-row>
-    <v-row v-if="cases.state === 1 || cases.state === 2">
+    <v-row v-if="this.$store.state.roles.indexOf('procurator') !== -1 && cases.state === 1 || cases.state === 2">
       <v-col>
         <v-btn color="primary" class="mx-2" @click="revise">修改</v-btn>
       </v-col>

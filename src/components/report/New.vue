@@ -74,6 +74,7 @@
         reportDto.content = this.report.content;
         reportDto.creatorId = idToken.id;
         reportDto.suggestionId = this.report.suggestionId;
+        reportDto.officeId = idToken.officeId;
         this.$api.report.newReport(reportDto).then(function (res) {
           if(res.data.code === OK){
             // 成功跳转即可
