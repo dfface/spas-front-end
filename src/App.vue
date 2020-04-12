@@ -241,8 +241,12 @@ export default {
       model: false,
       items: [
         {
-          to: '/report/evaluate',
+          to: '/report/evaluating',
           title: '评估整改报告'
+        },
+        {
+          to: '/report/evaluate-history',
+          title: '历史整改报告'
         }
       ],
       itemsForGov: [

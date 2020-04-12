@@ -30,6 +30,9 @@
     components: {
       ReportOutline
     },
+    props: [
+      'isGov'
+    ],
     data: () => ({
       reports: [],
       current: 1,
@@ -38,7 +41,11 @@
     methods: {
       get(){
         let _this = this;
-        this.$api.report.history(this.current).then(function (res) {
+        let myMethod = 'history';
+        if(!this.isGov){
+          myMethod = 'evaluateHistory';
+        }
+        this.$api.report[myMethod](this.current).then(function (res) {
           if(res.data.code === OK){
             _this.current = res.data.data.current;
             _this.length = res.data.data.count;
@@ -50,7 +57,11 @@
     },
     mounted() {
       let _this = this;
-      this.$api.report.history(this.current).then(function (res) {
+      let myMethod = 'history';
+      if(!this.isGov){
+        myMethod = 'evaluateHistory';
+      }
+      this.$api.report[myMethod](this.current).then(function (res) {
         if(res.data.code === OK){
           _this.current = res.data.data.current;
           _this.length = res.data.data.count;

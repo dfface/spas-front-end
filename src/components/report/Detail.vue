@@ -57,21 +57,23 @@
     </v-row>
     <v-row v-if="(reportDetail.state === REPORT_NOT_JUDGE) && (this.$store.state.roles.indexOf('procurator') !== -1)">
       <v-col>
-        <v-form>
           <v-textarea
             name="judge"
             outlined
             label="整改报告评价"
             v-model="reportDetail.judge"
           />
+          <span class="ma-2">评分</span>
           <v-rating
             v-model="reportDetail.score"
             half-increments
+            class="mb-12"
           />
           <v-select
-            items="items"
+            :items="items"
             label="选择后续程序"
             v-model="nextState"
+            outlined
           />
           <v-btn
             color="primary"
@@ -79,7 +81,6 @@
           >
             提交
           </v-btn>
-        </v-form>
       </v-col>
     </v-row>
     <v-slide-x-transition>
@@ -145,7 +146,7 @@
     }),
     methods: {
       evaluate(){
-        let reportJudgeDto;
+        let reportJudgeDto = {};
         let _this = this;
         reportJudgeDto.id = this.reportDetail.id;
         reportJudgeDto.judge = this.reportDetail.judge;
