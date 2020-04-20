@@ -10,6 +10,9 @@ export default {
   handling(id){
     return axiosInstance.get(`${base.cases}/handling/${id}`);
   },
+  handlingAudited(id){
+    return axiosInstance.get(`${base.cases}/handlingAudited/${id}`);
+  },
   history(id,current){
     return axiosInstance.get(`${base.cases}/history/${id}/${current}`);
   },

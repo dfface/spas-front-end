@@ -159,7 +159,7 @@
       let idToken = getIdToken();
       console.log('suggestion-new-idToken: ' + idToken.toString());
       let _this = this;
-      this.$api.cases.handling(idToken.id).then(function (res) {
+      this.$api.cases.handlingAudited(idToken.id).then(function (res) {
         console.log(res.data);
         if(res.data.code === OK){
           let caseItemsHere = [];
