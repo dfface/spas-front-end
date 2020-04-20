@@ -10,6 +10,7 @@ export const BASE_URL = 'http://192.168.122.1:8888'
 // 人员角色
 export const ADMIN_ROLE_NAME = 'chief_procurator';  // 管理员角色名
 export const GOV_ROLE_NAME = 'administrative_personnel';  // 行政单位角色名
+export const SUPER_ADMIN_ROLE_NAME = 'super_admin'; // 超级管理员
 
 // 用户相关状态
 export const USER_REGISTERED = 1;

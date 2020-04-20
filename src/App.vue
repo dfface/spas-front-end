@@ -136,6 +136,28 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <v-list-group
+          group="management"
+          v-model="drawerManagementItems.model"
+          v-if="getManagementItems !== null"
+        >
+          <template slot="activator">
+            <v-list-item-content>
+              <v-list-item-title>{{ drawerManagementItems.title }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item
+            v-for="(item,i) in getManagementItems"
+            :to="item.to"
+            :key="i"
+          >
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-content>
@@ -157,9 +179,15 @@
 
 <script>
 import {getIdToken} from './common/utils'
-import {ADMIN_ROLE_NAME, GOV_ROLE_NAME, TIME_OUT_SNACKBAR} from './common/settings'
+import {
+  ADMIN_ROLE_NAME,
+  GOV_ROLE_NAME,
+  TIME_OUT_SNACKBAR,
+  SUPER_ADMIN_ROLE_NAME
+} from './common/settings'
 import JWT from 'jwt-decode'
 import {IS_LOGGED_FALSE, LOGOUT_FAILED, LOGOUT_SUCCESS} from "./requests/apiCode";
+
 export default {
   name: 'App',
   components: {
@@ -259,6 +287,26 @@ export default {
           title: '历史整改报告'
         }
       ]
+    },
+    drawerManagementItems: {
+      title: '系统管理',
+      model: false,
+      items: [
+        {
+          to: '/management/user',
+          title: '人员管理'
+        },
+        {
+          to: '/management/role',
+          title: '角色管理'
+        }
+      ],
+      itemsForSuperAdmin: [
+        {
+          to: '/management/office',
+          title: '检察院管理'
+        }
+      ]
     }
   }),
   computed: {
@@ -297,6 +345,17 @@ export default {
       }
       else{
         return this.drawerReportItems.items;
+      }
+    },
+    getManagementItems(){
+      if(this.$store.state.roles.indexOf(ADMIN_ROLE_NAME) !== -1){
+        return this.drawerManagementItems.items;
+      }
+      else if(this.$store.state.roles.indexOf(SUPER_ADMIN_ROLE_NAME) !== -1){
+        return [...this.drawerManagementItems.items, ...this.drawerManagementItems.itemsForSuperAdmin];
+      }
+      else{
+        return null;
       }
     }
   },
