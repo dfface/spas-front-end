@@ -18,7 +18,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="title"> 整改报告评分 </v-list-item-title>
-              <v-list-item-subtitle> {{ reportDetail.score || '暂无' }}</v-list-item-subtitle>
+              <v-list-item-subtitle> {{ reportDetail.score ? parseFloat(reportDetail.score).toFixed(2) : '无' }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -164,7 +164,7 @@
             _this.snackbar.enable = true;
             // 强制刷新组件
             setTimeout(function () {
-              _this.$forceUpdate();
+              _this.$router.push('/report/evaluating');
             }, _this.snackbar.timeout);
           }
           else{

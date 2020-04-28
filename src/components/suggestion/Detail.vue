@@ -41,7 +41,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="title">检察建议评分</v-list-item-title>
-              <v-list-item-subtitle class="grey--text">{{ suggestion.score || '无' }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="grey--text">{{ suggestion.score ? parseFloat(suggestion.score).toFixed(2) : '无' }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-menu

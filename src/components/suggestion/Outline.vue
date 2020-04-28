@@ -6,7 +6,7 @@
           outlined
         >
           <v-card-title>{{ suggestion.supervisedName }}</v-card-title>
-          <v-card-subtitle>得分：{{ suggestion.score || '无'}} &nbsp;&nbsp;发出时间：{{ new Date(suggestion.createTime).toLocaleDateString() }}&nbsp;&nbsp; 回复期限：{{ new Date(suggestion.deadline).toLocaleDateString()}}</v-card-subtitle>
+          <v-card-subtitle>得分：{{ suggestion.score ? parseFloat(suggestion.score).toFixed(2) : '无'}} &nbsp;&nbsp;发出时间：{{ new Date(suggestion.createTime).toLocaleDateString() }}&nbsp;&nbsp; 回复期限：{{ new Date(suggestion.deadline).toLocaleDateString()}}</v-card-subtitle>
           <v-card-text>{{ suggestion.content }}</v-card-text>
           <v-card-actions>
             <v-btn :to="`/suggestion/detail/${suggestion.id}`" text> 查看详情 </v-btn>
