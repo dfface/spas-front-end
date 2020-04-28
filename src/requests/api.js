@@ -4,12 +4,12 @@
  */
 import {get,post} from './http'
 import axiosInstance from './http'
-import home from "./modules/home";
 import cases from "./modules/cases";
-import suggestion from './modules/suggestion';
+import home from "./modules/home";
 import office from "./modules/office";
-import role from "./modules/role";
 import report from "./modules/report";
+import suggestion from './modules/suggestion';
+import user from "./modules/user";
 
 // 历史遗留
 export const apiIsLogged = () => get('/isLogged');
@@ -21,8 +21,8 @@ axiosInstance['home'] = home;
 axiosInstance['cases'] = cases;
 axiosInstance['suggestion'] = suggestion;
 axiosInstance['office'] = office;
-axiosInstance['role'] = role;
 axiosInstance['report'] = report;
+axiosInstance['user'] = user;
 
 export default axiosInstance;
 

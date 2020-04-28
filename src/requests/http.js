@@ -23,22 +23,18 @@ axiosInstance.interceptors.request.use(
         console.log("axios-refresh-whether-or-not");
         let accessTokenParsed = JWT(accessToken);  // DEBUG：这里要解码JWT
         let now = new Date();
-        console.log("axios-need-to-refresh-token(UTC) exp: " + ((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000).toString() + " now: " + (now.getTime() + now.getTimezoneOffset() * 60 * 1000).toString());
-        if((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000 > (now.getTime() + now.getTimezoneOffset() * 60 * 1000) ){
+        // 时间一定要理清楚，最好前后端都用 UTC 时间
+        console.log("axios-need-to-refresh-token(UTC) exp: " + ((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000).toString() + " now: " + now.getTime().toString());
+        if((accessTokenParsed.exp - TIME_TO_UPDATE_TOKEN) * 1000 > now.getTime() ){
           // 无需更新
           console.log("axios-token-is-up-to-date");
         }
         else {
           // 需要更新
           console.log("axios-refresh-start");
-          axios.get('/refresh').then(function (res) {
-            if(res.code === IS_LOGGED_TRUE){
-              store.commit('changeAccessToken',res.data.accessToken);
-            }
-          })
-              .catch(function (err) {
-                console.log(err);
-              });
+          refresh();
+          // 添加了此行
+          return config;
         }
         config.headers['Authorization'] = store.state.accessToken;
       }
@@ -84,3 +80,23 @@ export function get(url, params = null) {
 }
 
 export default axiosInstance;
+
+async function refresh() {
+  // 注意这里是 axiosNew，地址有变化
+  let axiosNew = axios.create();
+  axiosNew.defaults.baseURL = BASE_URL;
+  axiosNew.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+  axiosNew.defaults.withCredentials = true;
+  await axiosNew.get(`${BASE_URL}/refresh`).then(function (res) {
+    console.log(res);
+    // 细节问题，res.【data】.code
+    if(res.data.code === IS_LOGGED_TRUE){
+      console.log("axios-refresh-changeAccessToken");
+      // 这里也有问题两个 data.data
+      store.commit('changeAccessToken',res.data.data.accessToken);
+    }
+  })
+    .catch(function (err) {
+      console.log(err);
+    });
+}

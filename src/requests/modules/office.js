@@ -3,7 +3,7 @@ import base from "../base";
 
 export default {
   all(){
-    return axiosInstance.get(`${base.office}`);
+    return axiosInstance.get(`${base.office}/all`);  // 必须这么做，我要用 Shiro 放行
   },
   allByPage(current, size){
     return axiosInstance.get(`${base.office}`,{params: {current, size}});
@@ -16,5 +16,8 @@ export default {
   },
   deleteOffice(id){
     return axiosInstance.delete(`${base.office}/${id}`);
+  },
+  roles(officeId){
+    return axiosInstance.get(`${base.role}/${officeId}`);
   }
 }

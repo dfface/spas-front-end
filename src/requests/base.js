@@ -4,5 +4,6 @@ export default {
   suggestion: '/suggestion',
   office: '/offices',
   report: '/report',
-  user: '/users'
+  user: '/users',
+  role: '/roles'
 }

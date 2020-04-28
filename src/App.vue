@@ -97,6 +97,7 @@
         <v-list-group
           group="suggestion"
           v-model="drawerSuggestionItems.model"
+          v-if="this.$store.state.roles.indexOf('super_admin') === -1"
         >
           <template slot="activator">
             <v-list-item-content>
@@ -118,6 +119,7 @@
         <v-list-group
           group="report"
           v-model="drawerReportItems.model"
+          v-if="this.$store.state.roles.indexOf('super_admin') === -1"
         >
           <template slot="activator">
             <v-list-item-content>
@@ -296,10 +298,6 @@ export default {
           to: '/management/user',
           title: '人员管理'
         },
-        {
-          to: '/management/role',
-          title: '角色管理'
-        }
       ],
       itemsForSuperAdmin: [
         {

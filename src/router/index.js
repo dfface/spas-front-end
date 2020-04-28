@@ -8,6 +8,7 @@ import store from '../store'
 import cases from './modules/case'
 import suggestion from "./modules/suggestion";
 import report from "./modules/report";
+import management from "./modules/management";
 
 Vue.use(VueRouter);
 
@@ -39,7 +40,8 @@ const routes = [
   },
   ...cases,
   ...suggestion,
-  ...report
+  ...report,
+  ...management
 ];
 
 const router = new VueRouter({

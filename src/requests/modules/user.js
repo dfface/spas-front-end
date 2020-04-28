@@ -1,8 +1,9 @@
 import axiosInstance from "../http";
 import base from "../base"
 export default {
-  revise(userOutlineVo){
-    return axiosInstance.put(`${base.user}`,userOutlineVo);
+  revise(userRoleUpdateDto){
+    console.log(userRoleUpdateDto);
+    return axiosInstance.post(`${base.user}`,JSON.stringify(userRoleUpdateDto));  // 两点须知：用户基本信息要全；角色改不改通过为空与否判断
   },
   all(officeId,current,size = 5){
     return axiosInstance.get(`${base.user}`,{
@@ -10,6 +11,13 @@ export default {
         officeId,current,size
       }
     });
+  },
+  allOnce(officeId){
+    return axiosInstance.get(`${base.user}/all`,{
+      params: {
+        officeId
+      }
+    })
   },
   deleteUser(userId){
     return axiosInstance.delete(`${base.user}/${userId}`);
