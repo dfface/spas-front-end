@@ -136,7 +136,7 @@
           timeout: TIME_OUT_SNACKBAR
         },
         offices: [],
-        officeId: "",
+        officeId: getIdToken().officeId,
         headers: [
           {
             text: "姓名",
@@ -277,6 +277,19 @@
         console.log(item);
       },
       deleteItem(item){
+        let _this = this;
+        this.$api.user.deleteUser(item.userId).then(function (res) {
+          if(res.data.code === OK){
+            _this.snackbar.color = "success";
+            // 删除
+            _this.userRoleInfos.splice(_this.userRoleInfos.indexOf(item),1);
+          }
+          else{
+            _this.snackbar.color = "error";
+          }
+          _this.snackbar.text = res.data.msg;
+          _this.snackbar.enable = true;
+        })
         console.log(item);
       },
       changeOffice(){
@@ -316,7 +329,27 @@
       }
     },
     mounted() {
-      let officeIdGet = getIdToken().officeId === null ? this.officeId : getIdToken().officeId;
+      // 获取所有角色信息
+      this.$api.office.roles(officeIdGet).then(function (res) {
+        if(res.data.code === OK){
+          _this.editedRolesText = Object.assign([],res.data.data.map(entry => ({
+            text: entry.description,
+            value: entry.id
+          })))
+        }
+      });
+      // 获取所有检察院信息
+      this.$api.office.all().then(function (res) {
+        if(res.data.code === OK){
+          _this.offices = Object.assign([],res.data.data.map(entry => ({
+            text: entry.name,
+            value: entry.id
+          })))
+        }
+        // _this.officeId = _this.offices[0].value;
+      });
+      let officeIdGet = getIdToken().officeId;
+      this.officeId = officeIdGet;
       let _this = this;
       // 获取所有用户
       this.$api.user.allOnce(officeIdGet).then(function (res) {
@@ -340,25 +373,7 @@
           console.log(res);
         }
       });
-      // 获取所有角色信息
-      this.$api.office.roles(officeIdGet).then(function (res) {
-          if(res.data.code === OK){
-            _this.editedRolesText = Object.assign([],res.data.data.map(entry => ({
-              text: entry.description,
-              value: entry.id
-            })))
-          }
-      });
-      // 获取所有检察院信息
-      this.$api.office.all().then(function (res) {
-        if(res.data.code === OK){
-          _this.offices = Object.assign([],res.data.data.map(entry => ({
-            text: entry.name,
-            value: entry.id
-          })))
-        }
-        _this.officeId = _this.offices[0].value;
-      });
+
     }
   }
 </script>
