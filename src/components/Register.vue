@@ -139,7 +139,7 @@
       getRoles(){
         console.log("Register-user.officeId: " + this.user.officeId);
         let _this = this;
-        this.$api.role.all(this.user.officeId).then(function (res) {
+        this.$api.office.roles(this.user.officeId).then(function (res) {
           if(res.data.code === OK){
             _this.role = res.data.data.map(entry => Object.assign({}, {text: entry.description, value: entry.id}))
           }

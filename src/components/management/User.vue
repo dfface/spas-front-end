@@ -329,6 +329,7 @@
       }
     },
     mounted() {
+      let officeIdGet = getIdToken().officeId;
       // 获取所有角色信息
       this.$api.office.roles(officeIdGet).then(function (res) {
         if(res.data.code === OK){
@@ -348,7 +349,6 @@
         }
         // _this.officeId = _this.offices[0].value;
       });
-      let officeIdGet = getIdToken().officeId;
       this.officeId = officeIdGet;
       let _this = this;
       // 获取所有用户
